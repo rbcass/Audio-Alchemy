@@ -1,0 +1,14 @@
+.pop{
+    background-image: url(wave2.gif) ;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    font-size: 32px;
+    color: white;
+}

@@ -1,5 +1,6 @@
 import React from 'react'
 import './Home.css'
+import './wave.gif'
 
 const Home = () => {
   return (

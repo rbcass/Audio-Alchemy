@@ -51,7 +51,7 @@
     transition: 0.5s;
   }
 
-  .navbar li a:hover{
+  .navbar ul li a:hover{
     color: blue;
 
   }
@@ -75,3 +75,4 @@
   .cross:hover{
    transform: scaleZ(90deg);
   }
+

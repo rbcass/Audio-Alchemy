@@ -1,9 +1,12 @@
 .Home {
     display: flex;
     justify-content: center;
+    background-image: url(wave.gif);
+    background-size: cover;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
     font-size: 32px;
+    color: white;
   }
   
   .home-text {
