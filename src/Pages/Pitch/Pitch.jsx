@@ -1,77 +1,44 @@
-
 import React, { useState } from 'react';
 import './Pitch.css';
 import './wave2.gif';
 import { PitchShifter } from 'soundtouchjs';
 
 const Pitch = () => {
-  const [pitch, setPitch] = useState(1.0);
-  const [audioBuffer, setAudioBuffer] = useState(null);
-  const [pitchedAudioBuffer, setPitchedAudioBuffer] = useState(null);
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
+  //file
 
-    if (file) {
-      const audioContext = new AudioContext();
-      const arrayBuffer = await file.arrayBuffer();
+  const handleFiles = (event) => {
+    const selectedFile = event.target.files[0];
+    setIsPlaying(selectedFile);
+  }
 
-      audioContext.decodeAudioData(arrayBuffer, (decodedAudio) => {
-        setAudioBuffer(decodedAudio);
+  const [isPlaying, setIsPlaying] = useState(null);
 
-        const shifter = new PitchShifter(audioContext.sampleRate);
-        shifter.pitch = pitch;
+ const playAudio = () =>{
+  const audioElement = document.getElementById('audio-element');
 
-        const outputBuffer = shifter.process(decodedAudio);
-
-        setPitchedAudioBuffer(outputBuffer);
-      });
+  if (isPlaying) {
+    if (audioElement.paused) {
+      audioElement.play();
+    } else {
+      audioElement.pause();
     }
-  };
-
-  const handlePitchChange = (event) => {
-    setPitch(parseFloat(event.target.value));
-  };
-
-  const handleAudioPlay = () => {
-    if (pitchedAudioBuffer) {
-        const audioContext = new AudioContext();
-        const audioSource = audioContext.createBufferSource();
-        audioSource.buffer = pitchedAudioBuffer;
-    
-        // Connect the audio source to the destination (speakers)
-        audioSource.connect(audioContext.destination);
-    
-        // Start playing the audio
-        audioSource.start();
-    }
-  };
+  }
+ }
 
   return (
     <div className='pop'>
       {/* <h1>Pitch Changer</h1> */}
-      <input type="file" accept="audio/*" onChange={handleFileUpload} />
-      <input
-        type="range"
-        min="0.5"
-        max="2.0"
-        step="0.01"
-        value={pitch}
-        onChange={handlePitchChange}
-      />
-      <span>{pitch.toFixed(2)}</span>
+      <input type='file' accept='audio/*' onChange={handleFiles} />
+      <button onClick={playAudio}>
+        {isPlaying && !isPlaying.paused ? 'Pause' : 'Play'}
+      </button>
 
-      <button onClick={handleAudioPlay}>Play Pitched Audio</button>
-
-      {pitchedAudioBuffer && (
-        <a
-          href={URL.createObjectURL(
-            new Blob([pitchedAudioBuffer.getChannelData(0)], { type: 'audio/wav' })
-          )}
-          download="pitched_audio.wav"
-        >
-          Download Pitched Audio
-        </a>
+      {isPlaying && (
+        <audio id='audio-element' controls>
+          <source src={URL.createObjectURL(isPlaying)} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
       )}
     </div>
   );
